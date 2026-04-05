@@ -2,44 +2,59 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>{{ page.title }}</title>
+  <title>Marzipano Partial Panorama</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <!-- Pannellum -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css">
-  <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
+  <script src="https://www.marzipano.net/demos/vendor/es5-shim.js"></script>
+  <script src="https://www.marzipano.net/demos/vendor/eventShim.js"></script>
+  <script src="https://www.marzipano.net/demos/vendor/classList.js"></script>
+  <script src="https://www.marzipano.net/demos/vendor/requestAnimationFrame.js"></script>
+
+  <script src="https://www.marzipano.net/demos/vendor/marzipano.js"></script>
 
   <style>
-    body, html { margin: 0; height: 100%; }
-    #panorama { width: 100%; height: 100vh; }
+    html, body { height: 100%; margin: 0; }
+    #pano { width: 100%; height: 100%; }
   </style>
 </head>
 <body>
 
-
-<div id="panorama"></div>
+<div id="pano"></div>
 
 <script>
-pannellum.viewer('panorama', {
-    "type": "equirectangular",
-    "panorama": '{{ page.image }}',
-    "autoLoad": true,
-    "autoRotate": -2,
+  // 画像の実サイズ（iPhone パノラマ）
+  const width = 16382;
+  const height = 3000;
 
-    // iPhone パノラマに最適化
-    "hfov": 120,       // 視野角を広めに
-    "minHfov": 50,
-    "maxHfov": 120,
-    "pitch": 0,
-    "yaw": 0,
+  // Marzipano Viewer
+  const viewer = new Marzipano.Viewer(document.getElementById('pano'));
 
-    // 部分パノラマでも自然に見える
-    "showZoomCtrl": false,
-    "showFullscreenCtrl": true
-});
-</script>  
- 
+  // 画像ソース
+  const source = Marzipano.ImageUrlSource.fromString(
+    '{{ page.image }}'
+  );
 
+  // 部分パノラマ用の geometry
+  const geometry = new Marzipano.EquirectGeometry([{ width: width }]);
+
+  // 部分パノラマの視野角を調整
+  const limiter = Marzipano.RectilinearView.limit.traditional(
+    120 * Math.PI/180, // 最大視野角
+    100 * Math.PI/180  // 最小視野角
+  );
+
+  const view = new Marzipano.RectilinearView({ yaw: 0, pitch: 0, fov: Math.PI/3 }, limiter);
+
+  // シーン作成
+  const scene = viewer.createScene({
+    source: source,
+    geometry: geometry,
+    view: view,
+    pinFirstLevel: true
+  });
+
+  scene.switchTo();
+</script>
 
 </body>
 </html>
