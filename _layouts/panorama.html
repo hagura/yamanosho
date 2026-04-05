@@ -35,15 +35,34 @@
     contain: 'outside'
   });
 
-  // ホイールで横スクロール
-  img.addEventListener('wheel', function(e) {
-    e.preventDefault();
-    panzoom.pan({
-      x: panzoom.getPan().x - e.deltaY,  // ← ホイール上下で横移動
-      y: panzoom.getPan().y
-    });
-  });
+  let direction = 1; // 1 = 右へ, -1 = 左へ
+
+  function autoScroll() {
+    const pos = panzoom.getPan();
+
+    // スクロール速度（px/フレーム）
+    const speed = 0.5;
+
+    // 新しい位置
+    const nextX = pos.x + speed * direction;
+
+    // 画像の幅と wrapper の幅を取得
+    const wrapper = document.getElementById('wrapper');
+    const maxLeft = 0;
+    const maxRight = wrapper.clientWidth - img.clientWidth;
+
+    // 端に来たら方向反転
+    if (nextX > maxLeft) direction = -1;
+    if (nextX < maxRight) direction = 1;
+
+    panzoom.pan({ x: nextX, y: pos.y });
+
+    requestAnimationFrame(autoScroll);
+  }
+
+  autoScroll();
 </script>
+
 
 </body>
 </html>
