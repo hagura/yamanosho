@@ -29,15 +29,20 @@
 
 <script>
   const img = document.getElementById('pano');
-
   const panzoom = Panzoom(img, {
-    maxScale: 0.5,
+    maxScale: 1,
     minScale: 1,
-    contain: 'outside',   // 画像が窓より大きいときだけ動く
+    contain: 'outside'
   });
 
-  // ホイールズームは今回は不要ならコメントアウトでもOK
-  // img.addEventListener('wheel', panzoom.zoomWithWheel);
+  // ホイールで横スクロール
+  img.addEventListener('wheel', function(e) {
+    e.preventDefault();
+    panzoom.pan({
+      x: panzoom.getPan().x - e.deltaY,  // ← ホイール上下で横移動
+      y: panzoom.getPan().y
+    });
+  });
 </script>
 
 </body>
