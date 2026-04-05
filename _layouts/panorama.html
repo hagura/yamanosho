@@ -9,8 +9,16 @@
 
   <style>
     body, html { margin: 0; height: 100%; overflow: hidden; }
-    #wrapper { width: 100%; height: 100%; }
-    #pano { height: 100%; display: block; }
+    #wrapper {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;      /* ← 窓になる */
+    }
+    #pano {
+      height: 100%;
+      display: block;
+      cursor: grab;          /* 視覚的にも「動かせそう」に */
+    }
   </style>
 </head>
 <body>
@@ -20,13 +28,16 @@
 </div>
 
 <script>
-  const elem = document.getElementById('wrapper');
-  const panzoom = Panzoom(elem, {
+  const img = document.getElementById('pano');
+
+  const panzoom = Panzoom(img, {
     maxScale: 1,
     minScale: 1,
-    contain: 'outside'
+    contain: 'outside',   // 画像が窓より大きいときだけ動く
   });
-  elem.addEventListener('wheel', panzoom.zoomWithWheel);
+
+  // ホイールズームは今回は不要ならコメントアウトでもOK
+  // img.addEventListener('wheel', panzoom.zoomWithWheel);
 </script>
 
 </body>
