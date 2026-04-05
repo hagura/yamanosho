@@ -68,7 +68,10 @@
     requestAnimationFrame(autoScroll);
   }
 
-  autoScroll();
+  // 画像が読み込まれてから開始
+  img.onload = () => {
+    autoScroll();
+  };
 </script>
 
 
