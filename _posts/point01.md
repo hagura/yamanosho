@@ -1,0 +1,5 @@
+---
+layout: panorama
+title: "POINT 01"
+image: "/yamanosho/assets/pano/01.jpg"
+---
