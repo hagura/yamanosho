@@ -46,18 +46,17 @@
       return;
     }
 
-    // スクロール速度（px/フレーム）
     const speed = 0.5;
-
-    // 新しい位置
     const nextX = pos.x + speed * direction;
 
-    console.log(nextX);
-
-    // 画像の幅と wrapper の幅を取得
     const wrapper = document.getElementById('wrapper');
+
+    // ★ naturalWidth を使う（clientWidth は不安定）
+    const imgWidth = img.naturalWidth;
+    const wrapperWidth = wrapper.clientWidth;
+
     const maxLeft = 0;
-    const maxRight = wrapper.clientWidth - img.clientWidth;
+    const maxRight = wrapperWidth - imgWidth;
 
     // 端に来たら方向反転
     if (nextX > maxLeft) direction = -1;
@@ -68,11 +67,17 @@
     requestAnimationFrame(autoScroll);
   }
 
-  // 画像が読み込まれてから開始
+  // 画像ロード後に開始
   img.onload = () => {
     autoScroll();
   };
+
+  // キャッシュ済み画像対策
+  if (img.complete) {
+    autoScroll();
+  }
 </script>
+
 
 
 </body>
