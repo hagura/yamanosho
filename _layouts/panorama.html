@@ -25,9 +25,17 @@ pannellum.viewer('panorama', {
     "panorama": '{{ page.image }}',
     "autoLoad": true,
     "autoRotate": -2,
-    "hfov": 120,          // 視野角（iPhone パノラマにちょうど良い）
+
+    // iPhone パノラマに最適化
+    "hfov": 120,       // 視野角を広めに
+    "minHfov": 50,
+    "maxHfov": 120,
     "pitch": 0,
-    "yaw": 0
+    "yaw": 0,
+
+    // 部分パノラマでも自然に見える
+    "showZoomCtrl": false,
+    "showFullscreenCtrl": true
 });
 </script>  
  
