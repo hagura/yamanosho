@@ -1,2 +1,4 @@
 title: <your site title>
 theme: jekyll-theme-cayman
+url: "https://hagura.github.io"
+baseurl: "/yamanosho"
