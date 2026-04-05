@@ -40,6 +40,12 @@
   function autoScroll() {
     const pos = panzoom.getPan();
 
+    // pos が undefined の場合はスキップ
+    if (!pos || isNaN(pos.x)) {
+      requestAnimationFrame(autoScroll);
+      return;
+    }
+
     // スクロール速度（px/フレーム）
     const speed = 0.5;
 
