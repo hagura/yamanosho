@@ -5,11 +5,6 @@
   <title>Marzipano Partial Panorama</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <script src="https://www.marzipano.net/demos/vendor/es5-shim.js"></script>
-  <script src="https://www.marzipano.net/demos/vendor/eventShim.js"></script>
-  <script src="https://www.marzipano.net/demos/vendor/classList.js"></script>
-  <script src="https://www.marzipano.net/demos/vendor/requestAnimationFrame.js"></script>
-
   <script src="https://cdn.jsdelivr.net/npm/marzipano@0.10.3/dist/marzipano.js"></script>
 
   <style>
@@ -22,11 +17,11 @@
 <div id="pano"></div>
 
 <script>
-  // 画像の実サイズ（iPhone パノラマ）
-  const width = 16382;
-  const height = 3000;
+  // iPhone パノラマの実サイズ（例）
+  const width = 4000;
+  const height = 936;
 
-  // Marzipano Viewer
+  // Viewer
   const viewer = new Marzipano.Viewer(document.getElementById('pano'));
 
   // 画像ソース
@@ -34,16 +29,20 @@
     '{{ page.image }}'
   );
 
-  // 部分パノラマ用の geometry
+  // 部分パノラマ用 geometry（幅だけ指定すればOK）
   const geometry = new Marzipano.EquirectGeometry([{ width: width }]);
 
-  // 部分パノラマの視野角を調整
+  // 視野角の制限（自然に見える設定）
   const limiter = Marzipano.RectilinearView.limit.traditional(
     120 * Math.PI/180, // 最大視野角
-    100 * Math.PI/180  // 最小視野角
+    50 * Math.PI/180   // 最小視野角
   );
 
-  const view = new Marzipano.RectilinearView({ yaw: 0, pitch: 0, fov: Math.PI/3 }, limiter);
+  // 初期ビュー
+  const view = new Marzipano.RectilinearView(
+    { yaw: 0, pitch: 0, fov: Math.PI/3 },
+    limiter
+  );
 
   // シーン作成
   const scene = viewer.createScene({
